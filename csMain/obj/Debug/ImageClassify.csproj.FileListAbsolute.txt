@@ -1,0 +1,9 @@
+D:\OneDrive\University\Github\ImageClassifier\csMain\bin\Debug\csMain.exe.config
+D:\OneDrive\University\Github\ImageClassifier\csMain\bin\Debug\csMain.exe
+D:\OneDrive\University\Github\ImageClassifier\csMain\bin\Debug\csMain.pdb
+D:\OneDrive\University\Github\ImageClassifier\csMain\obj\Debug\ImageClassify.csprojResolveAssemblyReference.cache
+D:\OneDrive\University\Github\ImageClassifier\csMain\obj\Debug\csMain.Form1.resources
+D:\OneDrive\University\Github\ImageClassifier\csMain\obj\Debug\csMain.Properties.Resources.resources
+D:\OneDrive\University\Github\ImageClassifier\csMain\obj\Debug\ImageClassify.csproj.GenerateResource.Cache
+D:\OneDrive\University\Github\ImageClassifier\csMain\obj\Debug\csMain.exe
+D:\OneDrive\University\Github\ImageClassifier\csMain\obj\Debug\csMain.pdb

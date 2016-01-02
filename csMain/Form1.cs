@@ -29,6 +29,8 @@ namespace csMain
         private string  selectPath;
         private int     SelectButton = 0;
         HotKeyInfo[]    KeyInfo = { new HotKeyInfo(true, "", ""), new HotKeyInfo(true, "", ""), new HotKeyInfo(true, "", "") };
+        MemoryStream    msImage = null;
+
         public Form1()
         {
             InitializeComponent();
@@ -51,10 +53,7 @@ namespace csMain
             StreamWriter settings = settings = File.CreateText(Path.Combine(Application.StartupPath, "Setting.ini"));
 
             for (int i = 0; i < 3; ++i)
-            {
-                string str = string.Format("{0}|{1}|{2}",KeyInfo[i].bMove, KeyInfo[i].KeyName, KeyInfo[i].folderPath);
-                settings.WriteLine(str);
-            }
+                settings.WriteLine("{0}|{1}|{2}", KeyInfo[i].bMove, KeyInfo[i].KeyName, KeyInfo[i].folderPath);
 
             settings.Close();
 
@@ -91,6 +90,7 @@ namespace csMain
                     {
                         if (this.MainPictureViewer.Image != null)
                         {
+                            if (msImage != null) msImage.Close();
                             this.MainPictureViewer.Image.Dispose();
                             this.MainPictureViewer.Image = null;
                         }
@@ -111,6 +111,7 @@ namespace csMain
                     {
                         if (this.MainPictureViewer.Image != null)
                         {
+                            if (msImage != null) msImage.Close();
                             this.MainPictureViewer.Image.Dispose();
                             this.MainPictureViewer.Image = null;
                         }
@@ -132,6 +133,7 @@ namespace csMain
                     {
                         if (this.MainPictureViewer.Image != null)
                         {
+                            if (msImage != null) msImage.Close();
                             this.MainPictureViewer.Image.Dispose();
                             this.MainPictureViewer.Image = null;
                         }
@@ -152,6 +154,7 @@ namespace csMain
                     {
                         if (this.MainPictureViewer.Image != null)
                         {
+                            if (msImage != null) msImage.Close();
                             this.MainPictureViewer.Image.Dispose();
                             this.MainPictureViewer.Image = null;
                         }
@@ -222,10 +225,11 @@ namespace csMain
 
         }
 
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        private void listView_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (this.MainPictureViewer.Image != null)
             {
+                if (msImage != null) msImage.Close();
                 this.MainPictureViewer.Image.Dispose();
                 this.MainPictureViewer.Image = null;
             }
@@ -236,9 +240,9 @@ namespace csMain
             lb_extension.Text = "";
             linkLabel1.Text = "클릭하여 해당 폴더를 열 수 있습니다.";
 
-            if (listView1.SelectedItems.Count == 0) return;
+            if (((ListView)sender).SelectedItems.Count == 0) return;
 
-            ListViewItem selectedItem = this.listView1.SelectedItems[0];
+            ListViewItem selectedItem = ((ListView)sender).SelectedItems[0];
             //  왠지 모르게 SubItem의 인덱스는 1부터.
             string filename = selectedItem.Text + '.' + selectedItem.SubItems[1].Text;
             string allpath = System.IO.Path.Combine(selectPath, filename);
@@ -247,8 +251,9 @@ namespace csMain
 
             try
             {
-                var mem = new MemoryStream(File.ReadAllBytes(allpath));
-                img = System.Drawing.Image.FromStream(mem);
+                if (msImage != null) msImage.Close();
+                msImage = new MemoryStream(File.ReadAllBytes(allpath));
+                img = System.Drawing.Image.FromStream(msImage);
             }
             catch (Exception exception)
             {
@@ -262,9 +267,9 @@ namespace csMain
             Size ViewerSize = this.MainPictureViewer.Size;
             Size imgSize = img.Size;
 
-            lb_width.Text = string.Format("{0}", imgSize.Width);
+            lb_width.Text = imgSize.Width.ToString();
             lb_x.Visible = true;
-            lb_height.Text = string.Format("{0}", imgSize.Height);
+            lb_height.Text = imgSize.Height.ToString();
             lb_extension.Text = selectedItem.SubItems[1].Text;
             linkLabel1.Text = allpath;
 
@@ -275,249 +280,29 @@ namespace csMain
             else
             {
                 Bitmap bmp = new Bitmap(ViewerSize.Width, ViewerSize.Height);
-                Graphics g = Graphics.FromImage(bmp);
-
-                float fResize = 1.0f;
-                if (imgSize.Height > imgSize.Width)
+                using (Graphics g = Graphics.FromImage(bmp))
                 {
-                    if (imgSize.Height > ViewerSize.Height) fResize = (float)ViewerSize.Height / (float)imgSize.Height;
+                    float fResize = 1.0f;
+                    if (imgSize.Height > imgSize.Width)
+                    {
+                        if (imgSize.Height > ViewerSize.Height) fResize = (float)ViewerSize.Height / (float)imgSize.Height;
+                    }
+                    else
+                    {
+                        if (imgSize.Width > ViewerSize.Width) fResize = (float)ViewerSize.Width / (float)imgSize.Width;
+                    }
+
+                    imgSize.Width = (int)(imgSize.Width * fResize);
+                    imgSize.Height = (int)(imgSize.Height * fResize);
+
+                    g.DrawImage(img, (ViewerSize.Width - imgSize.Width) / 2, (ViewerSize.Height - imgSize.Height) / 2, imgSize.Width, imgSize.Height);
+
+                    this.MainPictureViewer.Image = bmp;
                 }
-                else
-                {
-                    if (imgSize.Width > ViewerSize.Width) fResize = (float)ViewerSize.Width / (float)imgSize.Width;
-                }
 
-                imgSize.Width = (int)(imgSize.Width * fResize);
-                imgSize.Height = (int)(imgSize.Height * fResize);
-
-                g.DrawImage(img, (ViewerSize.Width - imgSize.Width) / 2, (ViewerSize.Height - imgSize.Height) / 2, imgSize.Width, imgSize.Height);
-
-                this.MainPictureViewer.Image = bmp;
             }
         }
-
-        private void listView2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (this.MainPictureViewer.Image != null)
-            {
-                this.MainPictureViewer.Image.Dispose();
-                this.MainPictureViewer.Image = null;
-            }
-
-            lb_width.Text = "";
-            lb_x.Visible = false;
-            lb_height.Text = "";
-            lb_extension.Text = "";
-            linkLabel1.Text = "클릭하여 해당 폴더를 열 수 있습니다.";
-
-            if (listView2.SelectedItems.Count == 0) return;
-
-            ListViewItem selectedItem = this.listView2.SelectedItems[0];
-            //  왠지 모르게 SubItem의 인덱스는 1부터.
-            string filename = selectedItem.Text + '.' + selectedItem.SubItems[1].Text;
-            string allpath = System.IO.Path.Combine(selectPath, filename);
-
-            Image img = null;
-
-            try
-            {
-                var mem = new MemoryStream(File.ReadAllBytes(allpath));
-                img = System.Drawing.Image.FromStream(mem);
-            }
-            catch (Exception exception)
-            {
-                this.MainPictureViewer.Image = null;
-
-                DialogResult res = MessageBox.Show(string.Format("읽을 수 없는 파일입니다!\n원인 : {0}", exception.Message));
-
-                return;
-            }
-
-            Size ViewerSize = this.MainPictureViewer.Size;
-            Size imgSize = img.Size;
-
-            lb_width.Text = string.Format("{0}", imgSize.Width);
-            lb_x.Visible = true;
-            lb_height.Text = string.Format("{0}", imgSize.Height);
-            lb_extension.Text = selectedItem.SubItems[1].Text;
-            linkLabel1.Text = allpath;
-
-            if (selectedItem.SubItems[1].Text == "GIF" || selectedItem.SubItems[1].Text == "gif")
-            {
-                this.MainPictureViewer.Image = img;
-            }
-            else
-            {
-                Bitmap bmp = new Bitmap(ViewerSize.Width, ViewerSize.Height);
-                Graphics g = Graphics.FromImage(bmp);
-
-                float fResize = 1.0f;
-                if (imgSize.Height > imgSize.Width)
-                {
-                    if (imgSize.Height > ViewerSize.Height) fResize = (float)ViewerSize.Height / (float)imgSize.Height;
-                }
-                else
-                {
-                    if (imgSize.Width > ViewerSize.Width) fResize = (float)ViewerSize.Width / (float)imgSize.Width;
-                }
-
-                imgSize.Width = (int)(imgSize.Width * fResize);
-                imgSize.Height = (int)(imgSize.Height * fResize);
-
-                g.DrawImage(img, (ViewerSize.Width - imgSize.Width) / 2, (ViewerSize.Height - imgSize.Height) / 2, imgSize.Width, imgSize.Height);
-
-                this.MainPictureViewer.Image = bmp;
-            }
-        }
-
-        private void listView3_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (this.MainPictureViewer.Image != null)
-            {
-                this.MainPictureViewer.Image.Dispose();
-                this.MainPictureViewer.Image = null;
-            }
-
-            lb_width.Text = "";
-            lb_x.Visible = false;
-            lb_height.Text = "";
-            lb_extension.Text = "";
-            linkLabel1.Text = "클릭하여 해당 폴더를 열 수 있습니다.";
-
-            if (listView3.SelectedItems.Count == 0) return;
-
-            ListViewItem selectedItem = this.listView3.SelectedItems[0];
-            //  왠지 모르게 SubItem의 인덱스는 1부터.
-            string filename = selectedItem.Text + '.' + selectedItem.SubItems[1].Text;
-            string allpath = System.IO.Path.Combine(selectPath, filename);
-
-            Image img = null;
-
-            try
-            {
-                var mem = new MemoryStream(File.ReadAllBytes(allpath));
-                img = System.Drawing.Image.FromStream(mem);
-            }
-            catch (Exception exception)
-            {
-                this.MainPictureViewer.Image = null;
-
-                DialogResult res = MessageBox.Show(string.Format("읽을 수 없는 파일입니다!\n원인 : {0}", exception.Message));
-
-                return;
-            }
-
-            Size ViewerSize = this.MainPictureViewer.Size;
-            Size imgSize = img.Size;
-
-            lb_width.Text = string.Format("{0}", imgSize.Width);
-            lb_x.Visible = true;
-            lb_height.Text = string.Format("{0}", imgSize.Height);
-            lb_extension.Text = selectedItem.SubItems[1].Text;
-            linkLabel1.Text = allpath;
-
-            if (selectedItem.SubItems[1].Text == "GIF" || selectedItem.SubItems[1].Text == "gif")
-            {
-                this.MainPictureViewer.Image = img;
-            }
-            else
-            {
-                Bitmap bmp = new Bitmap(ViewerSize.Width, ViewerSize.Height);
-                Graphics g = Graphics.FromImage(bmp);
-
-                float fResize = 1.0f;
-                if (imgSize.Height > imgSize.Width)
-                {
-                    if (imgSize.Height > ViewerSize.Height) fResize = (float)ViewerSize.Height / (float)imgSize.Height;
-                }
-                else
-                {
-                    if (imgSize.Width > ViewerSize.Width) fResize = (float)ViewerSize.Width / (float)imgSize.Width;
-                }
-
-                imgSize.Width = (int)(imgSize.Width * fResize);
-                imgSize.Height = (int)(imgSize.Height * fResize);
-
-                g.DrawImage(img, (ViewerSize.Width - imgSize.Width) / 2, (ViewerSize.Height - imgSize.Height) / 2, imgSize.Width, imgSize.Height);
-
-                this.MainPictureViewer.Image = bmp;
-            }
-        }
-
-        private void listView4_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (this.MainPictureViewer.Image != null)
-            {
-                this.MainPictureViewer.Image.Dispose();
-                this.MainPictureViewer.Image = null;
-            }
-
-            lb_width.Text = "";
-            lb_x.Visible = false;
-            lb_height.Text = "";
-            lb_extension.Text = "";
-            linkLabel1.Text = "클릭하여 해당 폴더를 열 수 있습니다.";
-
-            if (listView4.SelectedItems.Count == 0) return;
-
-            ListViewItem selectedItem = this.listView4.SelectedItems[0];
-            //  왠지 모르게 SubItem의 인덱스는 1부터.
-            string filename = selectedItem.Text + '.' + selectedItem.SubItems[1].Text;
-            string allpath = System.IO.Path.Combine(selectPath, filename);
-
-            Image img = null;
-
-            try
-            {
-                var mem = new MemoryStream(File.ReadAllBytes(allpath));
-                img = System.Drawing.Image.FromStream(mem);
-            }
-            catch (Exception exception)
-            {
-                this.MainPictureViewer.Image = null;
-
-                DialogResult res = MessageBox.Show(string.Format("읽을 수 없는 파일입니다!\n원인 : {0}", exception.Message));
-
-                return;
-            }
-
-            Size ViewerSize = this.MainPictureViewer.Size;
-            Size imgSize = img.Size;
-
-            lb_width.Text = string.Format("{0}", imgSize.Width);
-            lb_x.Visible = true;
-            lb_height.Text = string.Format("{0}", imgSize.Height);
-            lb_extension.Text = selectedItem.SubItems[1].Text;
-            linkLabel1.Text = allpath;
-
-            if (selectedItem.SubItems[1].Text == "GIF" || selectedItem.SubItems[1].Text == "gif")
-            {
-                this.MainPictureViewer.Image = img;
-            }
-            else
-            {
-                Bitmap bmp = new Bitmap(ViewerSize.Width, ViewerSize.Height);
-                Graphics g = Graphics.FromImage(bmp);
-
-                float fResize = 1.0f;
-                if (imgSize.Height > imgSize.Width)
-                {
-                    if (imgSize.Height > ViewerSize.Height) fResize = (float)ViewerSize.Height / (float)imgSize.Height;
-                }
-                else
-                {
-                    if (imgSize.Width > ViewerSize.Width) fResize = (float)ViewerSize.Width / (float)imgSize.Width;
-                }
-
-                imgSize.Width = (int)(imgSize.Width * fResize);
-                imgSize.Height = (int)(imgSize.Height * fResize);
-
-                g.DrawImage(img, (ViewerSize.Width - imgSize.Width) / 2, (ViewerSize.Height - imgSize.Height) / 2, imgSize.Width, imgSize.Height);
-
-                this.MainPictureViewer.Image = bmp;
-            }
-        }
-
+        
         private void BTReloadPath_Click(object sender, EventArgs e)
         {
             DialogResult resFolder = this.folderBrowserDialog1.ShowDialog();
@@ -569,6 +354,7 @@ namespace csMain
 
             if (this.MainPictureViewer.Image != null)
             {
+                if (msImage != null) msImage.Close();
                 this.MainPictureViewer.Image.Dispose();
                 this.MainPictureViewer.Image = null;
             }
@@ -599,6 +385,7 @@ namespace csMain
 
             if (this.MainPictureViewer.Image != null)
             {
+                if (msImage != null) msImage.Close();
                 this.MainPictureViewer.Image.Dispose();
                 this.MainPictureViewer.Image = null;
             }
@@ -626,6 +413,7 @@ namespace csMain
 
             if (this.MainPictureViewer.Image != null)
             {
+                if (msImage != null) msImage.Close();
                 this.MainPictureViewer.Image.Dispose();
                 this.MainPictureViewer.Image = null;
             }
@@ -653,6 +441,7 @@ namespace csMain
 
             if (this.MainPictureViewer.Image != null)
             {
+                if (msImage != null) msImage.Close();
                 this.MainPictureViewer.Image.Dispose();
                 this.MainPictureViewer.Image = null;
             }
@@ -699,6 +488,7 @@ namespace csMain
         {
             if (this.MainPictureViewer.Image != null)
             {
+                if (msImage != null) msImage.Close();
                 this.MainPictureViewer.Image.Dispose();
                 this.MainPictureViewer.Image = null;
             }

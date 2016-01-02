@@ -50,13 +50,14 @@ namespace csMain
         //  윈폼 종료 시 호출
         protected override void OnClosed(EventArgs e)
         {
-            StreamWriter settings = settings = File.CreateText(Path.Combine(Application.StartupPath, "Setting.ini"));
+            using (StreamWriter settings = File.CreateText(Path.Combine(Application.StartupPath, "Setting.ini")))
+            {
+                for (int i = 0; i < 3; ++i)
+                    settings.WriteLine("{0}|{1}|{2}", KeyInfo[i].bMove, KeyInfo[i].KeyName, KeyInfo[i].folderPath);
 
-            for (int i = 0; i < 3; ++i)
-                settings.WriteLine("{0}|{1}|{2}", KeyInfo[i].bMove, KeyInfo[i].KeyName, KeyInfo[i].folderPath);
+                settings.Close();
 
-            settings.Close();
-
+            }
             base.OnClosed(e);
         }
 

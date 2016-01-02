@@ -96,10 +96,13 @@ namespace csMain
                         }
 
                         ListViewItem selectedItem = nowSelectListView.SelectedItems[0];
+                        int SelectIndex = nowSelectListView.Items.IndexOf(selectedItem);
 
                         nowSelectListView.Items.Remove(selectedItem);
                         listView1.Items.Add(selectedItem);
-                        
+
+                        if(nowSelectListView.Items.Count > 0)
+                            nowSelectListView.Items[Math.Min(nowSelectListView.Items.Count - 1, SelectIndex)].Selected = true;
                     }
                 }
                 if (keyData.Equals(Keys.D1))
@@ -113,11 +116,14 @@ namespace csMain
                         }
 
                         ListViewItem selectedItem = nowSelectListView.SelectedItems[0];
-
+                        int SelectIndex = nowSelectListView.Items.IndexOf(selectedItem);
+                        
                         nowSelectListView.Items.Remove(selectedItem);
                         try { listView2.Items.Add(selectedItem); }
                         catch(Exception ex) { MessageBox.Show(ex.Message); }
 
+                        if (nowSelectListView.Items.Count > 0)
+                            nowSelectListView.Items[Math.Min(nowSelectListView.Items.Count - 1, SelectIndex)].Selected = true;
                     }
                 }
                 else if (keyData.Equals(Keys.D2))
@@ -131,10 +137,13 @@ namespace csMain
                         }
 
                         ListViewItem selectedItem = nowSelectListView.SelectedItems[0];
+                        int SelectIndex = nowSelectListView.Items.IndexOf(selectedItem);
 
                         nowSelectListView.Items.Remove(selectedItem);
                         listView3.Items.Add(selectedItem);
-                        
+
+                        if (nowSelectListView.Items.Count > 0)
+                            nowSelectListView.Items[Math.Min(nowSelectListView.Items.Count - 1, SelectIndex)].Selected = true;
                     }
                 }
                 else if (keyData.Equals(Keys.D3))
@@ -149,9 +158,13 @@ namespace csMain
 
                         ListViewItem selectedItem = nowSelectListView.SelectedItems[0];
 
+                        int SelectIndex = nowSelectListView.Items.IndexOf(selectedItem);
+
                         nowSelectListView.Items.Remove(selectedItem);
                         listView4.Items.Add(selectedItem);
-                        
+
+                        if (nowSelectListView.Items.Count > 0)
+                            nowSelectListView.Items[Math.Min(nowSelectListView.Items.Count - 1, SelectIndex)].Selected = true;
                     }
                 }
                 else
@@ -166,6 +179,8 @@ namespace csMain
                     case 2: listView3 = nowSelectListView; break;
                     case 3: listView4 = nowSelectListView; break;
                 }
+
+                
                 return true;
 
             }

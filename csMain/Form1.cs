@@ -698,7 +698,7 @@ namespace csMain
                 string strPathSrc = Path.Combine(selectPath, strName + '.' + strExtension);
                 string strPathDst = Path.Combine(KeyInfo[0].folderPath, strName + '.' + strExtension);
 
-                if (KeyInfo[0].KeyName != "" && File.Exists(strPathSrc))
+                if (KeyInfo[0].folderPath != "" && File.Exists(strPathSrc))
                 {
                     if (KeyInfo[0].bMove)
                          System.IO.File.Move(strPathSrc, strPathDst);
@@ -715,7 +715,7 @@ namespace csMain
                 string strPathSrc = Path.Combine(selectPath, strName + '.' + strExtension);
                 string strPathDst = Path.Combine(KeyInfo[1].folderPath, strName + '.' + strExtension);
 
-                if (KeyInfo[1].KeyName != "" && File.Exists(strPathSrc))
+                if (KeyInfo[1].folderPath != "" && File.Exists(strPathSrc))
                 {
                     if (KeyInfo[1].bMove)
                          System.IO.File.Move(strPathSrc, strPathDst);
@@ -732,7 +732,7 @@ namespace csMain
                 string strPathSrc = Path.Combine(selectPath, strName + '.' + strExtension);
                 string strPathDst = Path.Combine(KeyInfo[2].folderPath, strName + '.' + strExtension);
 
-                if (KeyInfo[2].KeyName != "" && File.Exists(strPathSrc))
+                if (KeyInfo[2].folderPath != "" && File.Exists(strPathSrc))
                 {
                     if (KeyInfo[2].bMove)
                          System.IO.File.Move(strPathSrc, strPathDst);

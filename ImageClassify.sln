@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageClassify", "csMain\ImageClassify.csproj", "{D37C3616-DCA3-4CE1-9B7A-AB5C03CFA4AD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D37C3616-DCA3-4CE1-9B7A-AB5C03CFA4AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D37C3616-DCA3-4CE1-9B7A-AB5C03CFA4AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D37C3616-DCA3-4CE1-9B7A-AB5C03CFA4AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D37C3616-DCA3-4CE1-9B7A-AB5C03CFA4AD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

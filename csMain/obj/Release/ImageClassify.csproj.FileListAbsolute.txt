@@ -1,9 +1,0 @@
-D:\OneDrive\University\Github\ImageClassifier\csMain\bin\Release\csMain.exe.config
-D:\OneDrive\University\Github\ImageClassifier\csMain\bin\Release\csMain.exe
-D:\OneDrive\University\Github\ImageClassifier\csMain\bin\Release\csMain.pdb
-D:\OneDrive\University\Github\ImageClassifier\csMain\obj\Release\csMain.Form1.resources
-D:\OneDrive\University\Github\ImageClassifier\csMain\obj\Release\csMain.Properties.Resources.resources
-D:\OneDrive\University\Github\ImageClassifier\csMain\obj\Release\ImageClassify.csproj.GenerateResource.Cache
-D:\OneDrive\University\Github\ImageClassifier\csMain\obj\Release\csMain.exe
-D:\OneDrive\University\Github\ImageClassifier\csMain\obj\Release\csMain.pdb
-D:\OneDrive\University\Github\ImageClassifier\csMain\obj\Release\ImageClassify.csprojResolveAssemblyReference.cache

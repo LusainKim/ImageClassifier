@@ -1,8 +1,0 @@
-D:\OneDrive\University\personal project\C＃SampleProject\csMain\bin\Release\csMain.exe.config
-D:\OneDrive\University\personal project\C＃SampleProject\csMain\bin\Release\csMain.exe
-D:\OneDrive\University\personal project\C＃SampleProject\csMain\bin\Release\csMain.pdb
-D:\OneDrive\University\personal project\C＃SampleProject\csMain\obj\Release\csMain.Form1.resources
-D:\OneDrive\University\personal project\C＃SampleProject\csMain\obj\Release\csMain.Properties.Resources.resources
-D:\OneDrive\University\personal project\C＃SampleProject\csMain\obj\Release\csMain.csproj.GenerateResource.Cache
-D:\OneDrive\University\personal project\C＃SampleProject\csMain\obj\Release\csMain.exe
-D:\OneDrive\University\personal project\C＃SampleProject\csMain\obj\Release\csMain.pdb

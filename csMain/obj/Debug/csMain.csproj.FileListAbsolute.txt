@@ -1,9 +1,0 @@
-D:\OneDrive\University\personal project\C＃SampleProject\csMain\bin\Debug\csMain.exe.config
-D:\OneDrive\University\personal project\C＃SampleProject\csMain\bin\Debug\csMain.exe
-D:\OneDrive\University\personal project\C＃SampleProject\csMain\bin\Debug\csMain.pdb
-D:\OneDrive\University\personal project\C＃SampleProject\csMain\obj\Debug\csMain.csprojResolveAssemblyReference.cache
-D:\OneDrive\University\personal project\C＃SampleProject\csMain\obj\Debug\csMain.Form1.resources
-D:\OneDrive\University\personal project\C＃SampleProject\csMain\obj\Debug\csMain.Properties.Resources.resources
-D:\OneDrive\University\personal project\C＃SampleProject\csMain\obj\Debug\csMain.csproj.GenerateResource.Cache
-D:\OneDrive\University\personal project\C＃SampleProject\csMain\obj\Debug\csMain.exe
-D:\OneDrive\University\personal project\C＃SampleProject\csMain\obj\Debug\csMain.pdb

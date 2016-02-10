@@ -28,6 +28,7 @@ namespace csMain
     {
         private string  selectPath;
         private int     SelectButton = 0;
+        // 1, 2, 3번 리스트의 속성 값.
         HotKeyInfo[]    KeyInfo = { new HotKeyInfo(true, "", ""), new HotKeyInfo(true, "", ""), new HotKeyInfo(true, "", "") };
         MemoryStream    msImage = null;
 
@@ -496,7 +497,7 @@ namespace csMain
 
             int[] donotaltFiles = new int[3];
             int[] altFiles = new int[3];
-
+            int listCount = 0;
             for (int i = 0; i < listView2.Items.Count; ++i)
             {
                 string strName = listView2.Items[i].Text;
@@ -504,15 +505,31 @@ namespace csMain
                 string strPathSrc = Path.Combine(selectPath, strName + '.' + strExtension);
                 string strPathDst = Path.Combine(KeyInfo[0].folderPath, strName + '.' + strExtension);
 
-                if (KeyInfo[0].folderPath != "" && File.Exists(strPathSrc))
+                if (KeyInfo[listCount].folderPath != "" && File.Exists(strPathSrc) && !(File.Exists(strPathDst)))
                 {
-                    if (KeyInfo[0].bMove)
+                    if (KeyInfo[listCount].bMove)
                          System.IO.File.Move(strPathSrc, strPathDst);
                     else System.IO.File.Copy(strPathSrc, strPathDst, true);
-                    altFiles[0]++;
+                    altFiles[listCount]++;
                 }
-                else donotaltFiles[0]++;
+                else if (File.Exists(strPathDst))
+                {
+                    string strMessage = string.Format("파일이 중복됩니다. 바꾸시겠습니까?\n");
+                    DialogResult dr = MessageBox.Show(strMessage, "중복!", MessageBoxButtons.OKCancel);
+                    if(DialogResult.OK == dr)
+                    {
+                        System.IO.File.Delete(strPathDst);
+                        if (KeyInfo[listCount].bMove)
+                            System.IO.File.Move(strPathSrc, strPathDst);
+                        else System.IO.File.Copy(strPathSrc, strPathDst, true);
+                        altFiles[listCount]++;
+                    }
+                    else donotaltFiles[listCount]++;
+                }
+                else donotaltFiles[listCount]++;
             }
+
+            listCount = 1;
 
             for (int i = 0; i < listView3.Items.Count; ++i)
             {
@@ -521,15 +538,31 @@ namespace csMain
                 string strPathSrc = Path.Combine(selectPath, strName + '.' + strExtension);
                 string strPathDst = Path.Combine(KeyInfo[1].folderPath, strName + '.' + strExtension);
 
-                if (KeyInfo[1].folderPath != "" && File.Exists(strPathSrc))
+                if (KeyInfo[listCount].folderPath != "" && File.Exists(strPathSrc) && !(File.Exists(strPathDst)))
                 {
-                    if (KeyInfo[1].bMove)
-                         System.IO.File.Move(strPathSrc, strPathDst);
+                    if (KeyInfo[listCount].bMove)
+                        System.IO.File.Move(strPathSrc, strPathDst);
                     else System.IO.File.Copy(strPathSrc, strPathDst, true);
-                    altFiles[1]++;
+                    altFiles[listCount]++;
                 }
-                else donotaltFiles[1]++;
+                else if (File.Exists(strPathDst))
+                {
+                    string strMessage = string.Format("파일이 중복됩니다. 바꾸시겠습니까?\n");
+                    DialogResult dr = MessageBox.Show(strMessage, "중복!", MessageBoxButtons.OKCancel);
+                    if (DialogResult.OK == dr)
+                    {
+                        System.IO.File.Delete(strPathDst);
+                        if (KeyInfo[listCount].bMove)
+                            System.IO.File.Move(strPathSrc, strPathDst);
+                        else System.IO.File.Copy(strPathSrc, strPathDst, true);
+                        altFiles[listCount]++;
+                    }
+                    else donotaltFiles[listCount]++;
+                }
+                else donotaltFiles[listCount]++;
             }
+
+            listCount = 2;
 
             for (int i = 0; i < listView4.Items.Count; ++i)
             {
@@ -538,14 +571,28 @@ namespace csMain
                 string strPathSrc = Path.Combine(selectPath, strName + '.' + strExtension);
                 string strPathDst = Path.Combine(KeyInfo[2].folderPath, strName + '.' + strExtension);
 
-                if (KeyInfo[2].folderPath != "" && File.Exists(strPathSrc))
+                if (KeyInfo[listCount].folderPath != "" && File.Exists(strPathSrc) && !(File.Exists(strPathDst)))
                 {
-                    if (KeyInfo[2].bMove)
-                         System.IO.File.Move(strPathSrc, strPathDst);
+                    if (KeyInfo[listCount].bMove)
+                        System.IO.File.Move(strPathSrc, strPathDst);
                     else System.IO.File.Copy(strPathSrc, strPathDst, true);
-                    altFiles[2]++;
+                    altFiles[listCount]++;
                 }
-                else donotaltFiles[2]++;
+                else if (File.Exists(strPathDst))
+                {
+                    string strMessage = string.Format("파일이 중복됩니다. 바꾸시겠습니까?\n");
+                    DialogResult dr = MessageBox.Show(strMessage, "중복!", MessageBoxButtons.OKCancel);
+                    if (DialogResult.OK == dr)
+                    {
+                        System.IO.File.Delete(strPathDst);
+                        if (KeyInfo[listCount].bMove)
+                            System.IO.File.Move(strPathSrc, strPathDst);
+                        else System.IO.File.Copy(strPathSrc, strPathDst, true);
+                        altFiles[listCount]++;
+                    }
+                    else donotaltFiles[listCount]++;
+                }
+                else donotaltFiles[listCount]++;
             }
 
             MessageBox.Show(string.Format(
@@ -557,5 +604,9 @@ namespace csMain
 
             AddList(selectPath);
         }
+
+//      public bool CheckSameFile(string path, string fileName) { return (System.IO.File.Exists(path + fileName)); }
+
     }
+
 }

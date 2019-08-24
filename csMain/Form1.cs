@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace csMain
 {
@@ -320,6 +321,7 @@ namespace csMain
         {
             if (lb_x.Visible == false) return;
 
+            // Run Explorer with select item
             System.Diagnostics.Process process = new System.Diagnostics.Process();
             process.StartInfo.UseShellExecute = true;
             process.StartInfo.FileName = @"explorer.exe";
@@ -605,7 +607,31 @@ namespace csMain
             AddList(selectPath);
         }
 
-//      public bool CheckSameFile(string path, string fileName) { return (System.IO.File.Exists(path + fileName)); }
+        private void MainPictureViewer_MouseDown(object sender, MouseEventArgs e)
+        {
+            ListView nowSelectListView = null;
+
+            switch (SelectButton)
+            {
+                case 0: nowSelectListView = listView1; break;
+                case 1: nowSelectListView = listView2; break;
+                case 2: nowSelectListView = listView3; break;
+                case 3: nowSelectListView = listView4; break;
+            }
+            ListViewItem selectedItem = nowSelectListView.SelectedItems[0];
+
+            string filename = selectedItem.Text + '.' + selectedItem.SubItems[1].Text;
+            string allpath = System.IO.Path.Combine(selectPath, filename);
+
+            string[] paths = { allpath };
+
+            DataObject dataObj = new DataObject(DataFormats.FileDrop, paths);
+
+            DoDragDrop(dataObj, DragDropEffects.All);
+
+        }
+        
+        //      public bool CheckSameFile(string path, string fileName) { return (System.IO.File.Exists(path + fileName)); }
 
     }
 

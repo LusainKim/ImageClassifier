@@ -82,6 +82,7 @@
             this.MainPictureViewer.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.MainPictureViewer.TabIndex = 2;
             this.MainPictureViewer.TabStop = false;
+            this.MainPictureViewer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainPictureViewer_MouseDown);
             // 
             // listView1
             // 
